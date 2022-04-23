@@ -105,11 +105,11 @@ class PathFind_v1 {
 }
 
 let testArr: T2DArr = [
-    [0, 0, 0, 0, -1],
+    [0, 0, 0, -1, -1],
     [0, 0, 0, -1, 0],
     [0, 0, 0, 0, 0],
-    [0, -1, 0, 0, 0],
-    [-1, 0, 0, 0, 0]
+    [-1, -1, 0, 0, 0],
+    [-1, -1, 0, 0, 0]
 ];
 
 let startDot: TCord = {
@@ -126,6 +126,13 @@ let finishDot: TCord = {
 
 let path = new PathFind_v1(testArr, startDot, finishDot).find_path();
 
-console.log(path ? path.map(el => {
-    return {x: el.x, y: el.y}
-}) : false);
+if (path) {
+    let resultArr: any[] = testArr;
+    let i = 0;
+    for (let el of path) {
+        resultArr[el.x][el.y] = i + '';
+        i++;
+    }
+
+    console.log(resultArr)
+}
