@@ -21,7 +21,7 @@ class PathFind_v1 {
     ]
 
     private reachable: TCord[];
-    private explored: TCord[];
+    private readonly explored: TCord[];
 
     constructor(arr: T2DArr, startDot: TCord, finishDot: TCord) {
         this.arr = arr;
@@ -127,12 +127,16 @@ let finishDot: TCord = {
 let path = new PathFind_v1(testArr, startDot, finishDot).find_path();
 
 if (path) {
-    let resultArr: any[] = testArr;
-    let i = 0;
+    let resultArr: Array<Array<string | number>> = testArr;
+    let i = 1;
     for (let el of path) {
         resultArr[el.x][el.y] = i + '';
         i++;
     }
 
-    console.log(resultArr)
+    console.log(resultArr.map(arr => {
+        return arr.map(el => {
+            return el >= 0 ? "____" + el : "___" + el
+        })
+    }))
 }
