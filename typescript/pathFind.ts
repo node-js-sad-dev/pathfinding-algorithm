@@ -139,4 +139,6 @@ if (path) {
             return el >= 0 ? "____" + el : "___" + el
         })
     }))
+} else {
+    console.log('way not found')
 }

@@ -1,0 +1,33 @@
+* {
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+#canvas {
+    background-color: white;
+    display: block;
+    margin: 30px auto;
+    border: 1px solid black;
+}
+
+#btn {
+    display: block;
+    margin: auto;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 200px;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 1s;
+}
+
+#btn:hover {
+    background-color: black;
+    color: white;
+}
