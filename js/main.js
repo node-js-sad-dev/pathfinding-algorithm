@@ -7,7 +7,11 @@ const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 600;
 const DOT_RADIUS = 5;
 
-const CELL_SIZE = 5;
+const CELL_SIZE = 2;
+const MILLI = 10;
+const MIN_DIST = 200;
+const X_RANGE = 75;
+const Y_RANGE = 4;
 
 let dotsDrawn = false;
 let obstaclesDrawn = false;
@@ -30,10 +34,10 @@ btn.onclick = (e) => {
         dotTo = finishDot;
 
         ctx.fillStyle = 'red';
-        ctx.fillRect(startDot.x * CELL_SIZE, startDot.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        ctx.fillRect(startDot.x * CELL_SIZE, startDot.y * CELL_SIZE, DOT_RADIUS, DOT_RADIUS);
 
         ctx.fillStyle = 'red';
-        ctx.fillRect(finishDot.x * CELL_SIZE, finishDot.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        ctx.fillRect(finishDot.x * CELL_SIZE, finishDot.y * CELL_SIZE, DOT_RADIUS, DOT_RADIUS);
 
         dotsDrawn = true;
 
@@ -64,10 +68,20 @@ btn.onclick = (e) => {
 
 function drawPath(path) {
     if (path) {
-        for (let el of path) {
-            ctx.fillStyle = 'black';
-            ctx.fillRect(el.x * CELL_SIZE, el.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-        }
+        let i = 0;
+
+        let interval = setInterval(() => {
+            if (i === path.length) {
+                clearInterval(interval);
+            } else {
+                ctx.fillStyle = 'black';
+                ctx.fillRect(path[i].x * CELL_SIZE, path[i].y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                i++;
+            }
+        }, MILLI);
+
+    } else {
+        btn.textContent = 'No possible way to connect 2 dots!'
     }
 }
 
@@ -84,7 +98,7 @@ function generateStartFinishDots() {
 
     let distance = 0;
 
-    while (distance < 20) {
+    while (distance < MIN_DIST) {
         startDot = {
             x: randomNumber(DOT_RADIUS, CANVAS_WIDTH / CELL_SIZE),
             y: randomNumber(DOT_RADIUS, CANVAS_HEIGHT / CELL_SIZE)
@@ -110,16 +124,16 @@ function generateObstacles() {
 
     let yFrom, yTo, xFrom, xTo;
 
-    if ((middleY - 1) > 0) yFrom = middleY - 1;
+    if ((middleY - Y_RANGE) > 0) yFrom = middleY - Y_RANGE;
     else yFrom = 0;
 
-    if ((middleY + 1) < CANVAS_HEIGHT / CELL_SIZE) yTo = middleY + 1;
+    if ((middleY + Y_RANGE) < CANVAS_HEIGHT / CELL_SIZE) yTo = middleY + Y_RANGE;
     else yTo = CANVAS_HEIGHT / CELL_SIZE;
 
-    if ((middleX - 6) > 0) xFrom = middleX - 6;
+    if ((middleX - X_RANGE) > 0) xFrom = middleX - X_RANGE;
     else xFrom = 0;
 
-    if ((middleX + 6) < CANVAS_WIDTH / CELL_SIZE) xTo = middleX + 6;
+    if ((middleX + X_RANGE) < CANVAS_WIDTH / CELL_SIZE) xTo = middleX + X_RANGE;
     else xTo = CANVAS_WIDTH / CELL_SIZE;
 
     if (xFrom > xTo) {
@@ -138,8 +152,7 @@ function generateObstacles() {
 
     for (let i = xFrom; i < xTo; i++) {
         for (let j = yFrom; j < yTo; j++) {
-            console.log(arr[i][j])
-            ctx.fillStyle = 'blue';
+            ctx.fillStyle = 'red';
             ctx.fillRect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             arr[i][j] = -1;
         }
